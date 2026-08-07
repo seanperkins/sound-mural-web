@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="SoundMural turns the music in your own library — Plex, Jellyfin, Navidrome, or Spotify — into real-time, audio-reactive visuals on your Apple TV. Free to try, $9.99 to own, no subscription." />
+<meta name="theme-color" content="#07070f" />
+<title>SoundMural — Your music, painted across the room</title>
+<style>
+  :root{
+    --bg:#07070f;
+    --bg-2:#0b0b18;
+    --surface:rgba(255,255,255,.04);
+    --surface-2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.09);
+    --text:#eef0fb;
+    --muted:#9aa0b8;
+    --faint:#6b7089;
+    --cyan:#34d7f5;
+    --violet:#8b5cf6;
+    --magenta:#ec5fa0;
+    --lime:#a3e635;
+    --grad:linear-gradient(120deg,var(--cyan),var(--violet) 55%,var(--magenta));
+    --maxw:1120px;
+    --radius:16px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:rgba(139,92,246,.35)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- ambient background ---------- */
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;
+    background:
+      radial-gradient(60% 55% at 78% 8%, rgba(139,92,246,.22), transparent 60%),
+      radial-gradient(55% 50% at 12% 22%, rgba(52,215,245,.14), transparent 60%),
+      radial-gradient(50% 45% at 50% 100%, rgba(236,95,160,.12), transparent 60%),
+      var(--bg);}
+  .aurora::before,.aurora::after{content:"";position:absolute;inset:-40%;
+    background:
+      conic-gradient(from 180deg at 50% 50%, transparent 0 30%, rgba(52,215,245,.06) 40%, transparent 55% 75%, rgba(236,95,160,.05) 85%, transparent 100%);
+    filter:blur(46px);animation:drift 34s linear infinite;}
+  .aurora::after{inset:-30%;animation-duration:52s;animation-direction:reverse;filter:blur(70px)}
+  @keyframes drift{to{transform:rotate(1turn)}}
+  .noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:linear-gradient(rgba(7,7,15,.82),rgba(7,7,15,.55));
+    border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:28px;height:64px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:17px;letter-spacing:.2px}
+  .brand img{width:34px;height:34px;border-radius:8px;box-shadow:0 0 0 1px var(--line)}
+  .nav-links{display:flex;gap:22px;margin-left:auto}
+  .nav-links a{color:var(--muted);font-size:14.5px;font-weight:500;transition:color .15s}
+  .nav-links a:hover{color:var(--text)}
+  @media(max-width:640px){.nav-links{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:104px 0 88px;text-align:center}
+  .hero .logo{width:96px;height:96px;border-radius:22px;margin:0 auto 28px;
+    box-shadow:0 0 0 1px var(--line),0 24px 80px -20px rgba(139,92,246,.55)}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--lime);
+    background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.22);
+    padding:6px 14px;border-radius:999px;margin-bottom:26px}
+  .hero h1{font-size:clamp(40px,7vw,76px);line-height:1.02;font-weight:800;letter-spacing:-.02em;
+    max-width:15ch;margin:0 auto 22px}
+  .hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .sub{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:58ch;margin:0 auto 40px}
+  .cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:650;
+    padding:14px 26px;border-radius:14px;transition:transform .15s var(--ease),box-shadow .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--grad);color:#06060d;box-shadow:0 12px 40px -8px rgba(139,92,246,.6)}
+  .btn-primary:hover{box-shadow:0 16px 52px -8px rgba(139,92,246,.8)}
+  .btn-ghost{border:1px solid var(--line);color:var(--text);background:var(--surface)}
+  .btn-ghost:hover{border-color:var(--violet)}
+  .hero .note{margin-top:18px;font-size:13.5px;color:var(--faint)}
+  .hero .note b{color:var(--muted);font-weight:600}
+
+  .hero-viz{margin-top:64px;position:relative;border-radius:24px;overflow:hidden;
+    border:1px solid var(--line);aspect-ratio:16/9;
+    background:
+      radial-gradient(38% 42% at 30% 40%, rgba(52,215,245,.25), transparent 65%),
+      radial-gradient(42% 46% at 70% 60%, rgba(139,92,246,.3), transparent 65%),
+      radial-gradient(34% 40% at 55% 28%, rgba(236,95,160,.22), transparent 65%),
+      linear-gradient(160deg,#0d0d24,#07070f 70%);}
+  .hero-viz svg{position:absolute;inset:0;width:100%;height:100%;opacity:.85;mix-blend-mode:screen}
+  .hero-viz .scan{position:absolute;inset:-20%;background:linear-gradient(transparent 0 49.5%,rgba(255,255,255,.05) 50%,transparent 50.5%);
+    animation:scan 6s linear infinite;mix-blend-mode:overlay}
+  @keyframes scan{to{transform:translateY(40%)}}
+  .pulse{position:absolute;left:50%;top:12%;width:1px;height:0;background:var(--cyan);
+    box-shadow:0 0 12px 2px rgba(52,215,245,.7);transition:height .12s linear}
+  @media (prefers-reduced-motion:reduce){
+    .aurora::before,.aurora::after,.hero-viz .scan{animation:none !important}
+    .pulse{transition:none}
+  }
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:96px 0}
+  .sec-head{max-width:680px;margin:0 auto 56px;text-align:center}
+  .sec-head h2{font-size:clamp(30px,4.6vw,44px);font-weight:800;letter-spacing:-.015em;line-height:1.08}
+  .sec-head p{color:var(--muted);margin-top:16px;font-size:17px}
+  .sec-tag{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--violet);margin-bottom:14px}
+
+  /* ---------- features ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;transition:transform .2s var(--ease),border-color .2s,background .2s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.4);background:var(--surface-2)}
+  .card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:18px;
+    background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(52,215,245,.12));border:1px solid var(--line)}
+  .card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:15px}
+  .card.feature{border-color:rgba(163,230,53,.25)}
+  .card.feature .ic{background:linear-gradient(135deg,rgba(163,230,53,.18),rgba(139,92,246,.1))}
+  .sm{font-size:13px !important;color:var(--faint) !important;margin-top:10px}
+
+  /* ---------- visualizations ---------- */
+  .packs{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+  @media(max-width:960px){.packs{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.packs{grid-template-columns:1fr}}
+  .pack{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .pack h3{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;margin-bottom:6px}
+  .pack .count{font-size:12px;color:var(--faint);font-weight:500}
+  .pack ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:7px}
+  .pack li{font-size:14px;color:var(--muted);display:flex;gap:9px;align-items:baseline}
+  .pack li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet);transform:translateY(-1px)}
+  .pack.core li::before{background:var(--cyan)}
+  .pack.terminal li::before{background:var(--magenta)}
+  .pack.arcade li::before{background:var(--lime)}
+  .pack.demoscene li::before{background:#fbbf24}
+  .note-center{text-align:center;margin-top:26px;color:var(--faint);font-size:14px}
+
+  /* ---------- specs bar ---------- */
+  .specs{margin-top:44px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0}
+  .specs span{font-size:13.5px;color:var(--muted);font-weight:550;display:inline-flex;gap:8px;align-items:center}
+  .specs span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--lime)}
+
+  /* ---------- pricing ---------- */
+  .price-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:920px;margin:0 auto}
+  @media(max-width:720px){.price-wrap{grid-template-columns:1fr}}
+  .tier{border-radius:var(--radius);padding:34px;border:1px solid var(--line);background:var(--surface);position:relative}
+  .tier.paid{background:linear-gradient(180deg,rgba(139,92,246,.10),rgba(7,7,15,.2));border-color:rgba(139,92,246,.5)}
+  .tier .badge{position:absolute;top:-13px;left:34px;font-size:11.5px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;padding:5px 12px;border-radius:999px;
+    background:var(--grad);color:#06060d}
+  .tier h3{font-size:20px;font-weight:750}
+  .tier .price{font-size:44px;font-weight:800;letter-spacing:-.02em;margin:8px 0 2px}
+  .tier .price small{font-size:15px;color:var(--faint);font-weight:500}
+  .tier .pmt{font-size:13.5px;color:var(--faint);margin-bottom:18px}
+  .tier ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+  .tier li{font-size:15px;color:var(--muted);display:flex;gap:10px}
+  .tier li::before{content:"✓";color:var(--lime);font-weight:700}
+  .free li:last-child::before{content:"—";color:var(--faint)}
+  .tier .btn{width:100%;justify-content:center}
+  .trust{text-align:center;margin-top:30px;color:var(--faint);font-size:13.5px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  .trust span{display:inline-flex;gap:7px;align-items:center}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  details[open]{border-color:rgba(139,92,246,.4)}
+  summary{cursor:pointer;padding:20px 24px;font-size:16px;font-weight:600;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:20px;color:var(--muted);transition:transform .2s;font-weight:400}
+  details[open] summary::after{transform:rotate(45deg);color:var(--violet)}
+  details .a{padding:0 24px 22px;color:var(--muted);font-size:15px}
+  details .a b{color:var(--text);font-weight:600}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:48px 0 56px;margin-top:40px}
+  .foot{display:flex;flex-wrap:wrap;gap:16px 36px;align-items:center;justify-content:space-between;color:var(--faint);font-size:14px}
+  .foot .cols{display:flex;gap:24px;flex-wrap:wrap}
+  .foot a{color:var(--muted)}
+  .foot a:hover{color:var(--text)}
+  .made{margin-top:14px;font-size:12.5px;display:flex;gap:8px;align-items:center}
+  .made span{color:var(--magenta)}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<div class="noise"></div>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><img src="logo.png" alt="SoundMural" />SoundMural</div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#visuals">Visualizations</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <img class="logo" src="logo.png" alt="SoundMural app icon" />
+    <div class="kicker">Now on the App Store · Apple TV</div>
+    <h1>Your music, <span class="g">painted across the room</span></h1>
+    <p class="sub">SoundMural turns the music in your own library — Plex, Jellyfin, Navidrome, or Spotify — into real-time, audio-reactive visuals on your Apple TV.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#pricing">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" /></svg>
+        Get SoundMural
+      </a>
+      <a class="btn btn-ghost" href="#visuals">Explore the visuals</a>
+    </div>
+    <p class="note">Free to try · <b>$9.99 one-time</b> to own every visualization — no subscription</p>
+
+    <div class="hero-viz" id="viz" aria-hidden="true">
+      <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#34d7f5"/>
+            <stop offset=".5" stop-color="#8b5cf6"/>
+            <stop offset="1" stop-color="#ec5fa0"/>
+          </linearGradient>
+        </defs>
+        <g id="waves" fill="none" stroke="url(#beam)" stroke-linejoin="round">
+          <path id="w0" stroke-width="1.4" opacity=".9" d="M-20 112 q20 -26 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+          <path id="w1" stroke-width="1" opacity=".55" d="M-20 86 q26 -30 52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0"/>
+          <path id="w2" stroke-width="1" opacity=".4" d="M-20 138 q22 -22 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0"/>
+          <path id="w3" stroke-width="1.2" opacity=".7" d="M-20 168 q18 -18 36 0 t36 0 t36 0 t36 0 t36 0 t36 0 t36 0 t36 0 t36 0"/>
+          <path id="w4" stroke-width="1" opacity=".5" d="M-20 60 q30 -26 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+        </g>
+      </svg>
+      <div class="scan"></div>
+      <div class="pulse" id="pulse"></div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Why it feels alive</div>
+      <h2>More than a wallpaper</h2>
+      <p>Every SoundMural visualization is driven by the <b>actual audio</b> — real samples from your music, not a clock. Bass, mid, treble, onsets, and the beat each steering their own part of the picture.</p>
+    </div>
+    <div class="grid">
+      <div class="card feature">
+        <div class="ic">◆</div>
+        <h3>A fractal that breathes with the drop</h3>
+        <p>The signature effect is a Julia fractal, connected <b>if and only if</b> its constant lies within the Mandelbrot set. Bass energy drives that constant toward the boundary — so the mural strays apart on heavy bass, shatters into dust on a genuine drop, then reforms intact.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◐</div>
+        <h3>26 visualizations, one swipe up</h3>
+        <p>Flying tunnels, a city lighting one window per band, a brick-breaker playing itself, Amiga color bars, a raymarched mountain flight. Swipe up on the player to cycle, organized into five packs.</p>
+      </div>
+      <div class="card">
+        <div class="ic">♫</div>
+        <h3>Plays your own library</h3>
+        <p>Connect a <b>Plex</b>, <b>Jellyfin</b>, or <b>Navidrome</b> music server, browse by album art, and stream or download. Spotify works for now-playing, artwork, and transport.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◯</div>
+        <h3>Offline, and private by design</h3>
+        <p>Downloaded music plays with no network at all. Connections to your server are TLS-first, nothing is uploaded, and the app collects no telemetry and tracks no data.</p>
+      </div>
+      <div class="card">
+        <div class="ic">▣</div>
+        <h3>One cinematic camera</h3>
+        <p>Every visualization sits under a shared camera rig that pans on a Lissajous path that never repeats, zooms in on bass, and rolls on the beat. The <i>frame</i> moves — not just the pattern inside it.</p>
+      </div>
+      <div class="card">
+        <div class="ic">◎</div>
+        <h3>Reduce Motion that helps, not hinders</h3>
+        <p>Turn down the camera drift and pace with Reduce Motion — without ever silencing the music's own authority over the visuals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="visuals" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">The catalog</div>
+      <h2>Twenty-six murmurs from one wall of sound</h2>
+      <p>Rendered in Metal at 1080p60, grouped into five packs. The free tier includes a starter pack; one purchase unlocks the full catalog.</p>
+    </div>
+
+    <div class="packs">
+      <div class="pack core">
+        <h3>Classics <span class="count">9</span></h3>
+        <ul>
+          <li>Julia Fractal</li><li>Aurora</li><li>Reaction</li><li>Droste</li><li>Mandelbox</li>
+          <li>Particles</li><li>Cymatics</li><li>Voronoi</li><li>Metaballs</li>
+        </ul>
+      </div>
+      <div class="pack flight">
+        <h3>Flight <span class="count">4</span></h3>
+        <ul><li>Starfield</li><li>Tunnel</li><li>Cyberspace</li><li>Globe</li></ul>
+      </div>
+      <div class="pack terminal">
+        <h3>Terminal <span class="count">3</span></h3>
+        <ul><li>Datastream</li><li>Radar</li><li>Fire</li></ul>
+      </div>
+      <div class="pack arcade">
+        <h3>Arcade <span class="count">5</span></h3>
+        <ul><li>Breaker</li><li>Skyline</li><li>Highway</li><li>Crossing</li><li>Formation</li></ul>
+      </div>
+      <div class="pack demoscene">
+        <h3>Demoscene <span class="count">5</span></h3>
+        <ul><li>Plasma</li><li>Copper</li><li>Rotozoom</li><li>Ripple</li><li>Terrain</li></ul>
+      </div>
+    </div>
+    <p class="note-center">Every pack sits under the same camera rig and honours Reduce Motion.</p>
+
+    <div class="specs">
+      <span>Plex</span><span>Jellyfin</span><span>Navidrome</span><span>Spotify</span>
+      <span>26 visualizations</span><span>1080p60 Metal</span><span>Offline playback</span>
+      <span>TLS-first</span><span>Reduce Motion</span>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Pricing</div>
+      <h2>Free to try. Own it forever.</h2>
+      <p>No subscription, no recurring bill. Unlock every visualization with a single one-time purchase.</p>
+    </div>
+
+    <div class="price-wrap">
+      <div class="tier free">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <div class="pmt">forever · no trial to manage</div>
+        <ul>
+          <li>A starter pack of visualizations</li>
+          <li>Full playback from Plex, Jellyfin, Navidrome &amp; Spotify</li>
+          <li>Offline downloads &amp; all sources</li>
+          <li>Reduce Motion &amp; camera controls</li>
+        </ul>
+        <a class="btn btn-ghost" href="#faq">Try it free</a>
+      </div>
+      <div class="tier paid">
+        <div class="badge">Recommended</div>
+        <h3>Full Unlock</h3>
+        <div class="price">$9.99<small> one-time</small></div>
+        <div class="pmt">own every visualization, no subscription</div>
+        <ul>
+          <li>All 26 visualizations, all five packs</li>
+          <li>Everything in Free, unlocked</li>
+          <li>Works on every Apple TV you own</li>
+          <li>Free updates, yours forever</li>
+        </ul>
+        <a class="btn btn-primary" href="#">Unlock now — $9.99</a>
+      </div>
+    </div>
+    <div class="trust">
+      <span>✓ No subscription</span>
+      <span>✓ No ads</span>
+      <span>✓ No telemetry</span>
+      <span>✓ Own it forever</span>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Questions</div>
+      <h2>Everything you might ask</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Which Apple TVs does it run on?</summary>
+        <div class="a">SoundMural needs <b>tvOS 26</b> and is tuned for <b>Apple TV 4K (3rd generation)</b>, holding 1080p60 with adaptive quality. If your Apple TV can't run tvOS 26, it won't install — check the App Store entry for your device.</div>
+      </details>
+      <details>
+        <summary>Which music sources does it support?</summary>
+        <div class="a"><b>Plex</b>, <b>Jellyfin</b>, and <b>Navidrome</b> feed the visualizer real audio samples — that's what makes the fractal genuinely react to the music. <b>Spotify</b> is supported in metadata mode: it shows now-playing, artwork, and transport, but DRM prevents access to Spotify's audio, so those visuals run on a synthetic driver rather than real samples.</div>
+      </details>
+      <details>
+        <summary>Do I need an internet connection?</summary>
+        <div class="a">No. Anything you <b>download</b> to the TV plays fully offline. Streaming from your own server works across your home network (or anywhere the server is reachable). SoundMural itself needs no cloud service.</div>
+      </details>
+      <details>
+        <summary>Does it collect or share any of my data?</summary>
+        <div class="a">No. Connections to your music server are <b>TLS-first</b>, nothing you play is uploaded, and SoundMural collects <b>no telemetry</b> and tracks <b>no data</b>. Spotify requires the system's standard browser sign-in, exactly like the OS music app.</div>
+      </details>
+      <details>
+        <summary>How does the fractal actually react to music?</summary>
+        <div class="a">The signature effect is a Julia fractal whose constant is pushed toward the Mandelbrot boundary by <b>bass energy</b>. While the set stays connected, the mural breathes intact through most of a track; on a heavy drop it strains apart; on a genuine drop it shatters into disconnected dust — then reforms. Mid, treble, onsets, and the beat steer different parts of each other visualization.</div>
+      </details>
+      <details>
+        <summary>Is there really no subscription?</summary>
+        <div class="a">Correct. The app is free to try, and a single <b>$9.99 one-time</b> in-app purchase unlocks every visualization across all five packs, including free updates, on every Apple TV you own. No recurring charge, ever.</div>
+      </details>
+      <details>
+        <summary>I have Reachability / accessibility needs — what's available?</summary>
+        <div class="a"><b>Reduce Motion</b> damps camera drift and pace without muting the music's influence on the visuals. Visualization order and packs are fully switchable, and the on-screen player keeps controls within the standard tvOS focus model.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>© <span id="yr">2026</span> SoundMural. All rights reserved.</div>
+    <div class="cols">
+      <a href="mailto:privacy@soundmural.com">Privacy</a>
+      <a href="mailto:hello@soundmural.com">Support</a>
+    </div>
+  </div>
+  <div class="wrap made">Made in Metal, on an Apple TV <span>◐</span></div>
+</footer>
+
+<script>
+  // year
+  try{document.getElementById('yr').textContent=new Date().getFullYear()}catch(e){}
+
+  // Reactive hero pulse: a small bass-driven "heartbeat" tied to a synthetic beat
+  const pulse=document.getElementById('pulse');
+  const waves=document.querySelectorAll('#w0,#w1,#w2,#w3,#w4');
+  const bases=[112,86,138,168,60];
+  function tick(){
+    let beat=Math.sin(performance.now()/420);
+    let bass=(Math.sin(performance.now()/860)+1)/2;
+    // pulse height follows the "beat"
+    if(pulse) pulse.style.height=(8+Math.max(0,beat)*34)+'%';
+    // re-shape wave paths subtly with bass so the hero feels alive
+    waves.forEach((w,i)=>{
+      const b=bases[i], amp=(24+36*bass)-(i*4);
+      let d='M-20 '+b;
+      for(let x=0;x<=8;x++){
+        const px=-20+x*55;
+        const wobble=Math.sin(performance.now()/2000+i*1.3+x)*amp;
+        d+=' q '+(27.5)+' '+(wobble)+' '+(55)+' 0';
+      }
+      w.setAttribute('d',d);
+    });
+    requestAnimationFrame(tick);
+  }
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ /* hold still */ }
+  else{tick()}
+</script>
+</body>
+</html>

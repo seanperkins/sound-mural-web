@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Visualizer Settings</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; padding: 24px; box-sizing: border-box;
+    background: #fff; color: #1a1a1a;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #121212; color: #f0f0f0; } }
+  main { max-width: 36rem; margin: 0 auto; }
+  h1 { font-size: 1.35rem; margin: 0 0 1.25rem; }
+  section { margin: 0 0 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(127,127,127,.25); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-size: 1rem; margin: 0 0 .5rem; display: flex; align-items: center; justify-content: space-between; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  td { padding: .25rem 0; }
+  td.value { text-align: right; opacity: .85; }
+  button {
+    font: inherit; font-size: .8rem; padding: .3rem .7rem; border-radius: 999px;
+    border: 1px solid rgba(127,127,127,.4); background: transparent; color: inherit; cursor: pointer;
+  }
+  button:active { opacity: .6; }
+  .muted { opacity: .7; font-size: .9rem; }
+  #copyAll { display: block; margin-top: .5rem; }
+  /* Must come after any rule that sets `display` on a hideable element. The
+     `hidden` attribute only hides via the UA stylesheet's `display: none`, so
+     the author rule above beat it and left "Copy all" on screen in the
+     empty state, offering to copy nothing. */
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Visualizer Settings</h1>
+  <p id="empty" class="muted" hidden>Open this from the visualizer's debug overlay (swipe down, then scan the QR code).</p>
+  <div id="sections"></div>
+  <button id="copyAll" hidden>Copy all</button>
+</main>
+<script>
+(function () {
+  "use strict";
+
+  function base64UrlDecode(str) {
+    var b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) { b64 += "="; }
+    var binary = atob(b64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  // The label is stashed on the element rather than captured in a closure so a
+  // second click while "Copied" is still showing restores "Copy", not "Copied".
+  function flash(button, message) {
+    if (!button.dataset.label) { button.dataset.label = button.textContent; }
+    button.textContent = message;
+    setTimeout(function () { button.textContent = button.dataset.label; }, 1200);
+  }
+
+  // Pre-Clipboard-API path, and the rescue when writeText is refused. Kept
+  // because a silent no-op button is worse than a deprecated call.
+  function fallbackCopy(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    var copied = false;
+    try { copied = document.execCommand("copy"); } catch (e) { copied = false; }
+    document.body.removeChild(area);
+    return copied;
+  }
+
+  function copyText(text, button) {
+    // writeText rejects on a denied permission and is absent entirely outside a
+    // secure context. Without this branch the button would just do nothing, and
+    // the whole point of the page is getting this text back off the screen.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function () { flash(button, "Copied"); },
+        function () { flash(button, fallbackCopy(text) ? "Copied" : "Copy failed"); }
+      );
+    } else {
+      flash(button, fallbackCopy(text) ? "Copied" : "Copy failed");
+    }
+  }
+
+  // rows: array of [label, value] pairs. Returns the section's plain-text
+  // form, used by both its own Copy button and "Copy all".
+  //
+  // Everything below writes via textContent, never innerHTML. The now-playing
+  // fields are arbitrary metadata from a music provider, so reflecting them
+  // into markup would be a DOM-XSS foothold — same discipline as index.html.
+  function renderSection(container, title, rows) {
+    var section = document.createElement("section");
+    var heading = document.createElement("h2");
+    var titleText = document.createElement("span");
+    titleText.textContent = title;
+    heading.appendChild(titleText);
+
+    var lines = rows.map(function (r) { return r[0] + ": " + r[1]; });
+    var text = title + "\n" + lines.join("\n");
+
+    var copyButton = document.createElement("button");
+    copyButton.textContent = "Copy";
+    copyButton.addEventListener("click", function () { copyText(text, copyButton); });
+    heading.appendChild(copyButton);
+    section.appendChild(heading);
+
+    var table = document.createElement("table");
+    rows.forEach(function (r) {
+      var row = document.createElement("tr");
+      var label = document.createElement("td");
+      label.textContent = r[0];
+      var value = document.createElement("td");
+      value.className = "value";
+      value.textContent = r[1];
+      row.appendChild(label);
+      row.appendChild(value);
+      table.appendChild(row);
+    });
+    section.appendChild(table);
+    container.appendChild(section);
+    return text;
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var raw = params.get("d");
+  var payload = null;
+  if (raw) {
+    try { payload = JSON.parse(base64UrlDecode(raw)); } catch (e) { payload = null; }
+  }
+
+  var container = document.getElementById("sections");
+  var empty = document.getElementById("empty");
+  var copyAllButton = document.getElementById("copyAll");
+
+  if (!payload) {
+    empty.hidden = false;
+    return;
+  }
+
+  var allTexts = [];
+
+  if (payload.viz) {
+    allTexts.push(renderSection(container, "Visualization", [
+      ["Name", payload.viz.name], ["ID", payload.viz.id]
+    ]));
+  }
+  if (payload.settings && payload.settings.length) {
+    allTexts.push(renderSection(container, "Settings", payload.settings.map(function (s) {
+      return [s.l, s.d];
+    })));
+  }
+  if (payload.appSettings && payload.appSettings.length) {
+    allTexts.push(renderSection(container, "App Settings", payload.appSettings.map(function (s) {
+      return [s.l, s.d];
+    })));
+  }
+  if (payload.nowPlaying) {
+    var np = payload.nowPlaying;
+    var rows = [["Title", np.title]];
+    if (np.artist) { rows.push(["Artist", np.artist]); }
+    if (np.album) { rows.push(["Album", np.album]); }
+    allTexts.push(renderSection(container, "Now Playing", rows));
+  }
+  if (payload.perf) {
+    allTexts.push(renderSection(container, "Performance", [
+      ["FPS", Math.round(payload.perf.fps)],
+      ["Frame time", payload.perf.frameMs.toFixed(1) + " ms"],
+      ["Quality level", payload.perf.quality]
+    ]));
+  }
+  if (payload.app) {
+    allTexts.push(renderSection(container, "App Info", [
+      ["Version", payload.app.version],
+      ["Build", payload.app.build],
+      ["Device", payload.app.device],
+      ["OS", payload.app.os]
+    ]));
+  }
+
+  copyAllButton.hidden = false;
+  copyAllButton.addEventListener("click", function () {
+    copyText(allTexts.join("\n\n"), copyAllButton);
+  });
+})();
+</script>
+</body>
+</html>

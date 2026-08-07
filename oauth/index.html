@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Keeps the authorization code out of any onward Referer header. The code is
+     unredeemable without the PKCE verifier (which never leaves the Apple TV),
+     but there is no reason to leak it further than it already travels. -->
+<meta name="referrer" content="no-referrer">
+<title>Connecting to your Apple TV</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px; box-sizing: border-box;
+    background: #fff; color: #1a1a1a;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #121212; color: #f0f0f0; } }
+  main { max-width: 30rem; text-align: center; }
+  h1 { font-size: 1.35rem; margin: 0 0 .75rem; }
+  p { margin: 0 0 1rem; }
+  .muted { opacity: .7; font-size: .9rem; }
+  a.button {
+    display: inline-block; padding: .8rem 1.4rem; border-radius: 999px;
+    background: #1db954; color: #fff; text-decoration: none; font-weight: 600;
+  }
+  .error { color: #c0392b; }
+  @media (prefers-color-scheme: dark) { .error { color: #ff6b5a; } }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="heading">Connecting…</h1>
+  <p id="message">Handing this back to your Apple TV.</p>
+  <p id="actions" hidden><a class="button" id="continue" href="#">Continue on Apple TV</a></p>
+  <p class="muted" id="hint" hidden>
+    If nothing happens, tap the button above.
+  </p>
+</main>
+<script>
+(function () {
+  "use strict";
+
+  // The destination scheme+path is a HARDCODED CONSTANT. Nothing about the
+  // target is ever derived from the query string. This is what makes the page
+  // safe: an earlier design read the TV's address out of `state`, which turned
+  // the forwarder into an open redirector that could bounce a victim's
+  // authorization code to an attacker-controlled host. There is no such sink
+  // here — the only place this page can send anything is back into the app on
+  // the same device.
+  var CALLBACK_SCHEME = "appletv-visualizer://spotify-callback";
+
+  var params = new URLSearchParams(window.location.search);
+  var code = params.get("code");
+  var state = params.get("state");
+  var error = params.get("error");
+
+  // Everything below writes via textContent, never innerHTML/document.write.
+  // `state` and `error` are attacker-influencable, so reflecting them into
+  // markup would be a DOM-XSS foothold.
+  var heading = document.getElementById("heading");
+  var message = document.getElementById("message");
+  var actions = document.getElementById("actions");
+  var hint = document.getElementById("hint");
+  var button = document.getElementById("continue");
+
+  function show(title, text, isError) {
+    heading.textContent = title;
+    message.textContent = text;
+    if (isError) { message.className = "error"; }
+  }
+
+  // Spotify reports a denial as ?error=access_denied with no code. Forward it
+  // rather than collapsing every failure into "missing code", so the TV can
+  // tell "user cancelled" apart from "something broke".
+  if (!code && !error) {
+    show("Nothing to forward",
+         "Open this page from the Apple TV sign-in flow — it has no code to pass along.",
+         true);
+    return;
+  }
+
+  var query = [];
+  if (code) { query.push("code=" + encodeURIComponent(code)); }
+  if (error) { query.push("error=" + encodeURIComponent(error)); }
+  if (state) { query.push("state=" + encodeURIComponent(state)); }
+  var target = CALLBACK_SCHEME + "?" + query.join("&");
+
+  button.setAttribute("href", target);
+
+  if (error) {
+    show("Sign-in cancelled", "Returning to your Apple TV.", true);
+  }
+
+  // Some browsers only honour a custom-scheme navigation from a real user
+  // gesture, so the manual button is a required fallback, not decoration —
+  // Task 0a explicitly verifies which path this browser takes.
+  actions.hidden = false;
+  hint.hidden = false;
+
+  // replace() rather than assign(): no history entry, so the code does not sit
+  // in the back stack.
+  try {
+    window.location.replace(target);
+  } catch (e) {
+    show("Almost there", "Tap the button below to finish on your Apple TV.", false);
+  }
+})();
+</script>
+</body>
+</html>
