@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="SoundMural plays the albums you already own — Plex, Jellyfin, Navidrome or Spotify — and turns the actual waveform into 26 real-time visualizations on your Apple TV. Coming soon. Free to try, $9.99 to own, no subscription." />
+<meta name="description" content="SoundMural brings 26 real-time visualizations to Apple TV. Play your server library, Apple Music or internet radio, or follow Spotify playback. Audio-driven and metadata-driven modes vary by source. Coming soon." />
 <meta name="theme-color" content="#07070f" />
 <title>SoundMural — Your music, painted across the room</title>
 <style>
@@ -215,6 +215,22 @@
     .aurora::before,.aurora::after{animation:none !important}
     .btn:hover,.card:hover,.viz:hover{transform:none}
   }
+
+  [hidden]{display:none!important}
+  .motion-controls{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:24px 0}
+  .video-play{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:999px;padding:12px 20px;background:#171326;color:#fff;font:inherit;cursor:pointer}
+  button:focus-visible,input:focus-visible,.source-table:focus-visible{outline:3px solid #a8edff;outline-offset:5px}
+  .animations-paused *{animation-play-state:paused!important;scroll-behavior:auto!important}
+  .source-table{overflow-x:auto;border:1px solid rgba(255,255,255,.16);border-radius:16px}
+  .source-table table{width:100%;border-collapse:collapse;text-align:left;min-width:700px}
+  .source-table caption{text-align:left;padding:18px;color:#cbc6d8}
+  .source-table th,.source-table td{padding:16px;border-top:1px solid rgba(255,255,255,.12);vertical-align:top}
+  .source-table thead{background:rgba(255,255,255,.05)}
+  .launch-contact{max-width:760px;margin:32px auto 0;padding:24px;border:1px solid rgba(255,255,255,.16);border-radius:16px}
+  .launch-contact p{margin:12px 0;color:#cbc6d8}
+  .launch-contact label{display:block;margin:16px 0 8px}
+  .email-copy{display:flex;gap:12px;flex-wrap:wrap}
+  .email-copy input{flex:1;min-width:220px;border:1px solid #777184;border-radius:8px;background:#171326;color:#fff;font:inherit;padding:12px}
 </style>
 </head>
 <body>
@@ -238,16 +254,20 @@
     <img class="logo" src="logo.png" alt="SoundMural app icon" />
     <div class="kicker">Coming soon · Apple TV 4K</div>
     <h1>Your music, <span class="g">painted across the room</span></h1>
-    <p class="sub">SoundMural plays the albums you already own — from Plex, Jellyfin, Navidrome or Spotify — and turns the waveform itself into twenty-six real-time visualizations on your Apple TV.</p>
+    <p class="sub">Bring your music to the big screen with twenty-six real-time visualizations. Play your server library, Apple Music or internet radio, or follow Spotify playback. <a href="#sources">How the visuals respond depends on your source.</a></p>
     <div class="cta-row">
       <a class="btn btn-primary" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" /></svg>
-        Tell me when it ships
+        Email us for launch updates
       </a>
       <a class="btn btn-ghost" href="#visuals">See all 26 visualizations</a>
     </div>
-    <p class="note">Free to try at launch · <b>$9.99 one-time</b> to unlock every visualization — no subscription</p>
+    <p class="note">Free to try at launch · <b>$9.99 one-time</b> to unlock every visualization — no subscription<br />No mail app? <a href="#launch-updates">Copy our email address</a> and send your request from any email service.</p>
 
+    <div class="motion-controls">
+      <button class="btn btn-ghost" type="button" id="animation-toggle" hidden>Pause animations</button>
+      <span id="animation-status" role="status" class="note"></span>
+    </div>
     <div class="stage" id="stage">
       <video id="hero-video" muted loop playsinline preload="metadata" aria-hidden="true"
              poster="media/hero/julia.jpg"><source id="hero-src" src="media/hero/julia.mp4" type="video/mp4" /></video>
@@ -262,8 +282,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-tag">How it works</div>
-      <h2>It's watching the waveform, not a clock</h2>
-      <p>Most visualizers are an animation with a volume knob attached. SoundMural measures the audio sixty times a second — bass, mid, treble, transients, the beat, and how hard the track is building — and hands each of those to a different part of the picture.</p>
+      <h2>Music shapes the picture</h2>
+      <p>For music-server playback and internet radio, SoundMural analyses the audio for band energy and transients. Apple Music and Spotify use a musical driver based on track metadata and playback position. Each source gives the picture a different way to move.</p>
     </div>
     <div class="grid">
       <div class="card feature">
@@ -274,7 +294,7 @@
       <div class="card">
         <div class="ic">♫</div>
         <h3>Plays the library you already own</h3>
-        <p>Point it at a <b>Plex</b>, <b>Jellyfin</b>, or <b>Navidrome</b> server, browse by album art, and stream or download. Those three hand the visualizer real PCM samples — an eight-band spectrum, onsets, beat, and phrase tension. <b>Spotify</b> connects for now-playing, artwork, and transport.</p>
+        <p>Connect <b>Plex</b>, <b>Jellyfin</b>, or <b>Navidrome</b>, browse your albums, and play them on Apple TV with real audio analysis. Apple Music adds library playback and search. Spotify shows and controls music playing on your Spotify device.</p>
       </div>
       <div class="card">
         <div class="ic">◐</div>
@@ -588,10 +608,35 @@
     <p class="note-center">All twenty-six sit under the same camera rig, take their palette from the album art, and honour Reduce Motion.</p>
 
     <div class="specs">
-      <span>Plex</span><span>Jellyfin</span><span>Navidrome</span><span>Spotify</span>
-      <span>26 visualizations</span><span>1080p60 Metal</span><span>Offline playback</span>
+      <span>Plex</span><span>Jellyfin</span><span>Navidrome</span><span>Apple Music</span><span>Spotify</span><span>Internet radio</span>
+      <span>26 visualizations</span><span>1080p60 Metal</span><span>Source-specific playback</span>
       <span>TLS-first</span><span>Album-art palettes</span><span>Reduce Motion</span>
     </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Source guide</div>
+      <h2>Choose how you listen</h2>
+      <p>These are the source capabilities in the preview build. SoundMural is not yet on the App Store; launch availability may change.</p>
+    </div>
+    <div class="source-table" tabindex="0" role="region" aria-label="Music source capabilities">
+      <table>
+        <caption>Playback, browsing, visual response and offline support by source</caption>
+        <thead><tr><th scope="col">Source</th><th scope="col">Playback &amp; browsing</th><th scope="col">Visual response</th><th scope="col">Offline support</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Plex</th><td>Your server library, played on Apple TV</td><td>Real audio analysis</td><td>Temporary playback cache*</td></tr>
+          <tr><th scope="row">Jellyfin</th><td>Your server library, played on Apple TV</td><td>Real audio analysis</td><td>Temporary playback cache*</td></tr>
+          <tr><th scope="row">Navidrome</th><td>Your server library, played on Apple TV</td><td>Real audio analysis</td><td>Temporary playback cache*</td></tr>
+          <tr><th scope="row">Apple Music</th><td>Library and album search, played on Apple TV; subscription required</td><td>Track metadata and playback position</td><td>No offline download mode in SoundMural</td></tr>
+          <tr><th scope="row">Spotify</th><td>Now Playing and controls for another Spotify device; no library browsing in SoundMural</td><td>Track metadata and playback position</td><td>No Spotify downloads in SoundMural</td></tr>
+          <tr><th scope="row">Internet radio</th><td>Browse stations and play live streams on Apple TV</td><td>Real audio analysis</td><td>Live connection required</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">*Server tracks are cached during playback, but browsing and uncached music need your server. The cache can be cleared automatically; it is not a managed offline library.</p>
   </div>
 </section>
 
@@ -610,11 +655,11 @@
         <div class="pmt">forever · no trial to manage</div>
         <ul>
           <li>A starter pack of visualizations</li>
-          <li>Full playback from Plex, Jellyfin, Navidrome &amp; Spotify</li>
-          <li>Offline downloads from every source</li>
+          <li>Music-server, Apple Music and radio playback; Spotify controls</li>
+          <li>Source-specific playback and caching — see the source guide</li>
           <li>Album-art palettes, camera controls, Reduce Motion</li>
         </ul>
-        <a class="btn btn-ghost" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Get the launch email</a>
+        <a class="btn btn-ghost" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Email us for launch updates</a>
       </div>
       <div class="tier paid">
         <div class="badge">Recommended</div>
@@ -627,7 +672,7 @@
           <li>Works on every Apple TV on your account</li>
           <li>Free updates, yours forever</li>
         </ul>
-        <a class="btn btn-primary" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Tell me when it ships</a>
+        <a class="btn btn-primary" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Email us for launch updates</a>
       </div>
     </div>
     <div class="trust">
@@ -636,7 +681,17 @@
       <span>✓ No telemetry</span>
       <span>✓ Own it forever</span>
     </div>
-    <p class="price-note">Pricing at launch. SoundMural isn't on the App Store yet — leave an email and you'll get exactly one message when it is.</p>
+    <p class="price-note">Planned launch pricing. SoundMural isn't on the App Store yet. Email us to request one launch update.</p>
+    <div class="launch-contact" id="launch-updates">
+      <h3>No mail app configured?</h3>
+      <p>Copy the address below and send a message asking for the launch update from any email service. We'll send one launch email. Opening a draft or copying the address does not send your request.</p>
+      <label for="launch-email-address">Launch updates email address</label>
+      <div class="email-copy">
+        <input id="launch-email-address" type="text" value="hello@soundmural.com" readonly />
+        <button class="btn btn-ghost" type="button" id="copy-launch-email" hidden>Copy email address</button>
+      </div>
+      <p id="launch-email-status" role="status" class="note"></p>
+    </div>
   </div>
 </section>
 
@@ -649,7 +704,7 @@
     <div class="faq">
       <details open>
         <summary>When can I actually get it?</summary>
-        <div class="a">Not yet — SoundMural is finished enough to demo and not yet on the App Store. The visuals, the camera rig, and the Plex / Jellyfin / Navidrome / Spotify players are all built and running on real hardware; the free-versus-paid split is the remaining piece. Leave your address and you'll get <b>one</b> email on the day it ships, and nothing else.</div>
+        <div class="a">SoundMural is in preview and is not yet on the App Store. See the <a href="#sources">source guide</a> for the preview's playback capabilities. <a href="#launch-updates">Email us to request one launch update</a>; you can copy the address and use any email service.</div>
       </details>
       <details>
         <summary>Are the clips on this page really the app?</summary>
@@ -661,11 +716,11 @@
       </details>
       <details>
         <summary>Which music sources does it support, and does it matter which?</summary>
-        <div class="a">It matters a great deal. <b>Plex</b>, <b>Jellyfin</b> and <b>Navidrome</b> stream audio the app can actually analyse, giving the visualizer all twelve measured features — eight-band spectrum, onsets, beat, and the tension that builds across a phrase. <b>Spotify</b> works for browsing, now-playing, artwork and transport, but DRM means no app may touch its audio, so those visuals run on a musical driver derived from the track's own metadata rather than real samples.</div>
+        <div class="a">Yes. Music-server playback and radio provide audio for analysis. Apple Music and Spotify use track metadata and playback position, without access to raw audio samples. Spotify controls playback on another device and does not provide in-app library browsing. The <a href="#sources">source guide</a> lists playback and offline support separately.</div>
       </details>
       <details>
         <summary>Do I need an internet connection?</summary>
-        <div class="a">No. Anything you <b>download</b> to the TV plays fully offline. Streaming works anywhere your own server is reachable — usually your home network. SoundMural has no cloud service of its own to be offline from.</div>
+        <div class="a">It depends on the source. Your own music server can work over your home network without public internet, but it must be reachable for browsing and uncached tracks. Temporary playback caching is not a guaranteed offline library. Apple Music, Spotify integration and live radio need their respective services; SoundMural does not download their catalogs for offline use.</div>
       </details>
       <details>
         <summary>Does it collect or share any of my data?</summary>
@@ -698,78 +753,6 @@
   <div class="wrap made">Made in Metal, on an Apple TV <span>◐</span></div>
 </footer>
 
-<script>
-(function(){
-"use strict";
-var yr=document.getElementById('yr'); if(yr) yr.textContent=new Date().getFullYear();
-
-var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* Each clip is a real capture, so the page's whole job here is to not
-   download 26 of them at once: preload="none" in the markup, and nothing
-   plays until it is actually on screen. Under Reduce Motion nothing plays
-   at all and the poster frame stands in — a still of the real thing beats
-   a damped animation of a fake one. */
-var clips=[].slice.call(document.querySelectorAll('.viz video'));
-
-function play(v){
-  if(REDUCED) return;
-  if(v.preload==='none'){ v.preload='auto'; v.load(); }
-  var p=v.play();
-  /* Autoplay can still be refused (Low Power Mode, data saver). The poster
-     is already showing, so there is nothing to fall back to. */
-  if(p&&p.catch) p.catch(function(){});
-}
-
-if('IntersectionObserver' in window){
-  var io=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      var v=e.target;
-      if(e.isIntersecting) play(v); else if(!v.paused) v.pause();
-    });
-  },{rootMargin:'200px 0px',threshold:0.1});
-  clips.forEach(function(v){io.observe(v);});
-} else {
-  clips.forEach(play);
-}
-
-document.addEventListener('visibilitychange',function(){
-  if(document.hidden) clips.forEach(function(v){ if(!v.paused) v.pause(); });
-});
-
-/* The hero cycles three of them, loading each only when its turn comes so
-   the first paint costs one clip rather than three. */
-var HERO=[['julia','Julia Fractal','Classics'],
-          ['cyberspace','Cyberspace','Flight'],
-          ['skyline','Skyline','Arcade']];
-var hero=document.getElementById('hero-video'),
-    heroSrc=document.getElementById('hero-src'),
-    heroName=document.getElementById('hero-name'),
-    heroPack=document.getElementById('hero-pack'),
-    heroIdx=0;
-
-if(hero&&!REDUCED){
-  play(hero);
-  /* Advance on the clip's own loop rather than a timer, so the cut always
-     lands at the end of a loop instead of mid-phrase. */
-  var loops=0;
-  hero.addEventListener('timeupdate',function(){
-    if(hero.duration&&hero.currentTime<0.2&&hero.dataset.turned!=='1'){
-      hero.dataset.turned='1';
-      if(++loops>=2){ loops=0; next(); }
-    }
-    if(hero.currentTime>0.4) hero.dataset.turned='0';
-  });
-  var next=function(){
-    heroIdx=(heroIdx+1)%HERO.length;
-    var e=HERO[heroIdx];
-    heroSrc.src='media/hero/'+e[0]+'.mp4';
-    hero.load(); play(hero);
-    heroName.textContent=e[1];
-    heroPack.textContent=e[2];
-  };
-}
-})();
-</script>
+<script src="site.js" defer></script>
 </body>
 </html>
