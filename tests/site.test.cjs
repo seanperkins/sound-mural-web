@@ -121,7 +121,10 @@ test("hero source and poster change together after two actual loops", async () =
   }
   await flush();
   assert.equal(f.ids["hero-src"].src, "media/hero/cyberspace.mp4");
-  assert.equal(f.hero.poster, "media/hero/cyberspace.jpg");
+  assert.equal(f.hero.poster, "media/viz/cyberspace.jpg");
+  const fs = require("node:fs"), path = require("node:path");
+  assert.ok(fs.existsSync(path.join(__dirname, "..", f.hero.poster)), "rotated poster must exist");
+  assert.ok(fs.existsSync(path.join(__dirname, "..", f.ids["hero-src"].src)), "rotated video must exist");
   assert.equal(f.ids["hero-name"].textContent, "Cyberspace");
 });
 

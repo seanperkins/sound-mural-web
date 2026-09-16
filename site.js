@@ -133,7 +133,7 @@ function initializeSoundMuralPage(doc, win) {
       record.pending = false;
       record.blocked = false;
       source.src = "media/hero/" + choice[0] + ".mp4";
-      hero.poster = "media/hero/" + choice[0] + ".jpg";
+      hero.poster = "media/viz/" + choice[0] + ".jpg";
       if (heroName) heroName.textContent = choice[1];
       if (heroPack) heroPack.textContent = choice[2];
       hero.load();
