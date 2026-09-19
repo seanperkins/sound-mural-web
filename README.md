@@ -2,12 +2,13 @@
 
 Public site for **SoundMural — your music, painted across the room**.
 
-Two static surfaces live in this one repo, both served from **Netlify** at
-`soundmural.com`:
+Static pages live in this repo, served from **Netlify** at `soundmural.com`:
 
 | Path | Purpose | Source |
 | --- | --- | --- |
 | `/` | Marketing homepage (one-pager) | `index.html`, `logo.png` |
+| `/privacy/` | Privacy policy, including radio reporting consent and older beta behavior | `privacy/index.html`, `information.css` |
+| `/support/` | Contact, provider setup and troubleshooting | `support/index.html`, `information.css` |
 | `/oauth/` | Spotify authorization-code hop back to the tvOS app | `oauth/index.html` |
 | `/oauth/settings.html` | Decodes the app's debug-share QR payload | `oauth/settings.html` |
 

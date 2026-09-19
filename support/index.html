@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Get help with SoundMural on Apple TV: start account-free radio, connect a music server, manage privacy settings and contact support." />
+  <meta name="theme-color" content="#07070f" />
+  <link rel="canonical" href="https://soundmural.com/support/" />
+  <link rel="icon" href="/logo.png" type="image/png" />
+  <link rel="stylesheet" href="/information.css" />
+  <title>Support — SoundMural</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"><img src="/logo.png" width="34" height="34" alt="" />SoundMural</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/support/" aria-current="page">Support</a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+    <main id="main" tabindex="-1">
+      <div class="page-intro">
+        <p class="eyebrow">Help for your Apple TV</p>
+        <h1>SoundMural support</h1>
+        <p class="lead">Start with radio, connect your music library, or get help with something that isn't working.</p>
+        <a class="contact-link" href="mailto:hello@soundmural.com">hello@soundmural.com</a>
+        <p class="section-body">No SoundMural account is needed to ask for help. Never send passwords or access tokens.</p>
+      </div>
+      <nav class="contents" aria-label="On this page">
+        <ul>
+          <li><a href="#radio">Start with radio</a></li>
+          <li><a href="#providers">Connect your music</a></li>
+          <li><a href="#playback">Playback help</a></li>
+          <li><a href="#privacy">Privacy controls</a></li>
+          <li><a href="#contact">Contact support</a></li>
+        </ul>
+      </nav>
+      <section id="radio" aria-labelledby="radio-heading">
+        <h2 id="radio-heading">Play radio without an account</h2>
+        <div class="section-body">
+          <ol>
+            <li>Choose <strong>Internet Radio</strong> from the music-source chooser. If you already use another source, open <strong>Settings → Music Source → Internet Radio</strong>.</li>
+            <li>Open <strong>Stations</strong> and select a station, or use the <strong>Search</strong> tab to find one.</li>
+            <li>Select the station to start playback and its visualization. Use the remote's <strong>Back/Menu</strong> button to return from playback to browsing.</li>
+          </ol>
+          <p>Radio needs an internet connection, but no Plex server, music subscription or SoundMural account. Stations are run by independent broadcasters; a station may be unavailable, change its stream, or restrict where it can be heard. If one fails, try another before changing your setup.</p>
+          <div class="notice">
+            <p><strong>Using an older TestFlight beta?</strong> Build 20 and other versions without the Share Station Selections setting may automatically report your station selection to radio-browser.info when you tune. To avoid those reports, update to a version with the control and leave it off, or do not use radio in the older version. <a href="/privacy/#radio-reporting">Read the reporting details.</a></p>
+          </div>
+        </div>
+      </section>
+      <section id="providers" aria-labelledby="providers-heading">
+        <h2 id="providers-heading">Connect your music</h2>
+        <div class="section-body">
+          <p>Choose your service from the source chooser, or open <strong>Settings → Music Source</strong>. You need access to the selected service or server; SoundMural does not create that account for you.</p>
+          <h3>Plex</h3>
+          <p>Follow the on-screen link-code instructions to authorize SoundMural with your Plex account, then choose a server with a music library. Keep the server online and reachable from your Apple TV. To choose a different server while Plex is active, use <strong>Settings → Plex Server</strong>.</p>
+          <h3>Jellyfin</h3>
+          <p>Enter your Jellyfin server address and select <strong>Connect</strong>. If Quick Connect is available, open your user menu in the Jellyfin app or website, choose <strong>Quick Connect</strong>, and enter the code shown on the TV. If the server instead asks for credentials, use its Jellyfin username and password.</p>
+          <h3>Navidrome</h3>
+          <p>Enter the Navidrome server address, username and password, then select <strong>Sign In</strong>. Include a port or path if your server requires one. Use the account for that server, not your Apple Account.</p>
+          <h3>Apple Music</h3>
+          <p>Choose <strong>Apple Music</strong> and select <strong>Allow Access</strong> when offered. It uses this Apple TV's Apple Account and requires access to Apple Music catalog playback through an eligible subscription. If access was denied, manage the app's music access in tvOS Settings and return to SoundMural. Follow any subscription or authorization message shown in the app.</p>
+          <h3>If a server will not connect</h3>
+          <p>Check the address, port and credentials, and confirm the server is running. For a home server, make sure the Apple TV can reach it on your network. Prefer an HTTPS address. HTTP connections are not encrypted; for Jellyfin, Quick Connect avoids sending your password through the password form, but it does not make an HTTP connection encrypted.</p>
+        </div>
+      </section>
+      <section id="playback" aria-labelledby="playback-heading">
+        <h2 id="playback-heading">Playback and visualizations</h2>
+        <div class="section-body">
+          <h3>No sound or playback stopped</h3>
+          <p>Check the TV or receiver's volume and audio output. Try another track or station, then confirm the music server or internet connection is available. If the app shows an error, include its exact text when contacting support.</p>
+          <h3>A radio station will not skip tracks</h3>
+          <p>Radio is a live stream. There is no next track for SoundMural to select; choose another station instead.</p>
+          <h3>The motion is too strong</h3>
+          <p>Enable <strong>Reduce Motion</strong> in tvOS Settings. SoundMural honors that preference to reduce camera drift and motion. You can also adjust visualizer settings in the app. Stop viewing if an effect is uncomfortable; reduced motion does not remove every moving or flashing element.</p>
+          <h3>Find your version</h3>
+          <p>Open <strong>Settings → About</strong> in SoundMural for the version and build. Controls and behavior can differ between beta builds, so include both numbers in your report.</p>
+        </div>
+      </section>
+      <section id="privacy" aria-labelledby="privacy-heading">
+        <h2 id="privacy-heading">Privacy and disconnecting sources</h2>
+        <div class="section-body">
+          <p>In versions that include it, open <strong>Settings → About → Privacy Policy → Share Station Selections</strong>. This switch is <strong>off by default</strong> and applies only to this Apple TV. Turning it off stops future selection reports without disabling radio search or playback. It does not erase requests already sent. Radio search and streaming still connect to the directory and station services.</p>
+          <p>To sign out of Plex, Jellyfin or Navidrome, open <strong>Settings → Music Source</strong>, press and hold the connected source, and select <strong>Sign Out</strong>. Apple Music authorization is managed through tvOS Settings rather than an in-app Sign Out button.</p>
+          <p>To remove local app settings and cached files, sign out of connected sources first, then delete SoundMural from your Apple TV. The app has no single erase-all-data button. Deleting it does not necessarily remove Keychain credentials, iCloud-synced preferences or records held by music services. <a href="/privacy/#choices">Read the full data-management details.</a></p>
+        </div>
+      </section>
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Send a useful support request</h2>
+        <div class="section-body">
+          <p>Email <a href="mailto:hello@soundmural.com">hello@soundmural.com</a> with:</p>
+          <ul>
+            <li>The SoundMural version and build from <strong>Settings → About</strong>, and whether you installed it through TestFlight.</li>
+            <li>Your Apple TV model and tvOS version.</li>
+            <li>The music source, plus the station or track if relevant.</li>
+            <li>The steps that led to the issue, what you expected, and what happened.</li>
+            <li>The exact error message, or an optional screenshot with private details removed.</li>
+          </ul>
+          <p>Do not include passwords, access tokens, authorization codes or private server links. A screenshot or diagnostic file can contain personal information; review it before sending. By emailing, you share your email address and message with support. See the <a href="/privacy/#contact">Privacy Policy</a> for details.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 SoundMural. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/support/" aria-current="page">Support</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

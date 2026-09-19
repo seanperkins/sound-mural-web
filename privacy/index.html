@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How SoundMural handles local settings, music-service connections and optional radio station selection reports, including earlier TestFlight versions." />
+  <meta name="theme-color" content="#07070f" />
+  <link rel="canonical" href="https://soundmural.com/privacy/" />
+  <link rel="icon" href="/logo.png" type="image/png" />
+  <link rel="stylesheet" href="/information.css" />
+  <title>Privacy Policy — SoundMural</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"><img src="/logo.png" width="34" height="34" alt="" />SoundMural</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/privacy/" aria-current="page">Privacy Policy</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+    <main id="main" tabindex="-1">
+      <div class="page-intro">
+        <p class="eyebrow">Your music. Your choices.</p>
+        <h1>Privacy Policy</h1>
+        <p class="updated">Effective September 19, 2026</p>
+        <p class="lead">SoundMural does not require a SoundMural account. There are no ads or third-party analytics SDKs in the app, and no developer-operated listening-history or analytics backend.</p>
+        <p class="section-body">That does not mean using the app sends no data. Music providers, radio services and artwork hosts receive the requests needed to provide their services. This policy explains those connections, what stays on your Apple TV, and the optional radio reporting control.</p>
+      </div>
+      <nav class="contents" aria-label="On this page">
+        <ul>
+          <li><a href="#radio-reporting">Radio reporting</a></li>
+          <li><a href="#connections">Service connections</a></li>
+          <li><a href="#storage">Device &amp; iCloud storage</a></li>
+          <li><a href="#choices">Your choices</a></li>
+          <li><a href="#contact">Website &amp; contact</a></li>
+        </ul>
+      </nav>
+      <section id="radio-reporting" aria-labelledby="radio-heading">
+        <h2 id="radio-heading">Radio station selection reporting</h2>
+        <div class="section-body">
+          <p><strong>In versions with the Share Station Selections control, reporting is off by default.</strong> Find it in <strong>Settings → About → Privacy Policy</strong>. Turning it on allows SoundMural to send the selected radio-browser.info station's ID to <a href="https://www.radio-browser.info/">radio-browser.info</a> when you tune to that station, to contribute to its popularity rankings.</p>
+          <p>The receiving service sees your IP address and the request, including the app's name/version identifier. The report does not include a SoundMural account or advertising ID. A station ID identifies the chosen directory station; it is not a recording of the audio.</p>
+          <p>The choice is saved only on this Apple TV and is not synced through iCloud. Leaving it off does not affect station search or playback. Turning it off stops future reports and cancels pending reporting work, but cannot recall requests already sent or erase records already held by the directory.</p>
+          <div class="notice">
+            <p><strong>Earlier beta versions behave differently.</strong> TestFlight build 20 and other older versions without this control may report a radio-browser.info station selection automatically when you tune, without an opt-in setting.</p>
+            <p>To avoid those reports, <strong>update to a version that includes Share Station Selections and leave it off, or do not use radio in the older version.</strong> Check the version and build in Settings → About. This policy does not change the behavior of an already installed beta.</p>
+          </div>
+          <p>Radio-browser.info operates independently. SoundMural does not control its logging, retention or deletion practices, and makes no promise about how long it keeps a report.</p>
+        </div>
+      </section>
+      <section id="connections" aria-labelledby="connections-heading">
+        <h2 id="connections-heading">Connections needed to play music</h2>
+        <div class="section-body">
+          <h3>Radio browsing and streaming</h3>
+          <p>Browsing and searching the radio directory sends requests to radio-browser.info, including your search words or selected genre. Playing a station connects to the station's stream host. Those services can see your IP address and the requests they receive, even when Share Station Selections is off. A station logo may be downloaded from its artwork host when a logo URL is available.</p>
+          <h3>Your music providers</h3>
+          <p>When you connect Plex, Jellyfin, Navidrome or Apple Music, the app communicates with that provider or your configured server for sign-in or authorization, library information, searches, artwork and playback. Requests may include account or session credentials, app/device identifiers, search terms and the media you request.</p>
+          <p>These services and any artwork or streaming hosts necessarily receive network information such as your IP address. Their own policies and your server's configuration govern how they use and retain it. SoundMural does not operate those services.</p>
+          <h3>Connection security</h3>
+          <p>Use HTTPS for your music server where available. Some local-server configurations use HTTP, which does not encrypt traffic. The app's preference for HTTPS is not a guarantee that every configured server connection is encrypted.</p>
+        </div>
+      </section>
+      <section id="storage" aria-labelledby="storage-heading">
+        <h2 id="storage-heading">What stays on your device</h2>
+        <div class="section-body">
+          <p>SoundMural stores preferences, radio favorites, recent-play and resume information, and cached media or artwork on your Apple TV to provide its features. Radio favorites include saved station details. Audio analysis used to drive the visualizations runs on the device; SoundMural does not upload that analysis to a developer-operated service.</p>
+          <p>Saved provider session credentials are stored in the system Keychain. Apple Music uses Apple's system authorization rather than a SoundMural account. Connecting a source still sends the information needed to authenticate to the relevant service.</p>
+          <p>Some app-level visualization preferences, favorited visualizations and saved visualization defaults may sync through your Apple Account's iCloud key-value storage. <strong>The Share Station Selections choice stays local.</strong> Radio favorites, recent-play records and resume information are not part of that visualization-settings sync.</p>
+        </div>
+      </section>
+      <section id="choices" aria-labelledby="choices-heading">
+        <h2 id="choices-heading">Managing connections and local data</h2>
+        <div class="section-body">
+          <p>For a connected Plex, Jellyfin or Navidrome source, open <strong>Settings → Music Source</strong>, press and hold the connected source, and choose <strong>Sign Out</strong>. This removes its saved app session; it does not delete the provider's account, server library or records. You can also manage authorized access through the provider where it offers that control. Manage Apple Music access in tvOS Settings.</p>
+          <p>There is no single in-app “erase all data” control. To remove the app's local settings and cached files, sign out of connected sources first, then delete SoundMural from your Apple TV. Deleting the app is not a promise that Keychain credentials, iCloud-synced preferences or third-party records are erased. Synced preferences may return if you reinstall while using the same Apple Account.</p>
+          <p>For help with privacy questions or data you have sent directly to support, email <a href="mailto:hello@soundmural.com">hello@soundmural.com</a>. Do not send passwords, access tokens or other secrets. Requests about a provider's records need to go to that provider; SoundMural cannot delete records held by independent services.</p>
+        </div>
+      </section>
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">This website and contacting support</h2>
+        <div class="section-body">
+          <p>This is a static website hosted on Netlify. Loading it sends normal web requests, including your IP address and browser information, to the hosting service. These privacy and support pages contain no analytics scripts, third-party fonts or tracking pixels. Hosting is subject to <a href="https://www.netlify.com/privacy/">Netlify's privacy policy</a>; this policy does not promise that hosting access logs are absent.</p>
+          <p>If you email support or request a launch notification, you voluntarily share your email address and the contents of your message. That information is used to respond to your request, and is handled by the email services involved in delivery. Include only information you want to share; redact private details from screenshots or diagnostic files.</p>
+          <p>Privacy questions and requests can be sent to <a href="mailto:hello@soundmural.com">hello@soundmural.com</a>. This page will be updated when these practices change, with a revised effective date. App versions can differ; the radio-reporting section above explains the important difference for older betas.</p>
+          <p><a href="/support/">Get help with SoundMural</a></p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 SoundMural. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/privacy/" aria-current="page">Privacy Policy</a>
+        <a href="/support/">Support</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

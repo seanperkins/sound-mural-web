@@ -34,6 +34,8 @@
   }
   ::selection{background:rgba(139,92,246,.35)}
   a{color:inherit;text-decoration:none}
+  a:focus-visible,summary:focus-visible{outline:3px solid var(--lime);outline-offset:5px;border-radius:3px}
+  .policy-link{color:var(--cyan);text-decoration:underline;text-underline-offset:.2em}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 
   /* ---------- ambient background ---------- */
@@ -224,11 +226,13 @@
 <header>
   <div class="wrap nav">
     <div class="brand"><img src="logo.png" alt="SoundMural" />SoundMural</div>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="#features">Features</a>
       <a href="#visuals">Visualizations</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/support/">Support</a>
     </nav>
   </div>
 </header>
@@ -293,8 +297,8 @@
       </div>
       <div class="card">
         <div class="ic">◯</div>
-        <h3>Offline, and private by design</h3>
-        <p>Anything you download plays with no network at all. Connections to your server are TLS-first, nothing you play is uploaded, and the app collects <b>no telemetry</b> and tracks <b>no data</b>. There is no SoundMural account, because there is no SoundMural server.</p>
+        <h3>Your music, your privacy choices</h3>
+        <p>No SoundMural account, ads or third-party analytics SDKs. Music and radio services still receive the network requests needed to play. Radio selection reporting is optional and off by default in versions with the privacy control; older betas differ. <a class="policy-link" href="/privacy/">Read the Privacy Policy</a>.</p>
       </div>
     </div>
   </div>
@@ -633,7 +637,7 @@
     <div class="trust">
       <span>✓ No subscription</span>
       <span>✓ No ads</span>
-      <span>✓ No telemetry</span>
+      <span>No SoundMural account</span>
       <span>✓ Own it forever</span>
     </div>
     <p class="price-note">Pricing at launch. SoundMural isn't on the App Store yet — leave an email and you'll get exactly one message when it is.</p>
@@ -669,7 +673,7 @@
       </details>
       <details>
         <summary>Does it collect or share any of my data?</summary>
-        <div class="a">No. Connections to your music server are <b>TLS-first</b>, nothing you play is uploaded, and the app collects <b>no telemetry</b> and tracks <b>no data</b>. There's no account to make. Spotify uses the system's standard browser sign-in, exactly like Apple's own Music app, and the token stays on the device.</div>
+        <div class="a">There is no SoundMural account or developer-operated listening-history or analytics backend. Music providers, radio directories, station streams and artwork hosts still receive requests and your IP address. In versions with <b>Share Station Selections</b>, reporting a chosen station ID to radio-browser.info is <b>off by default</b> and can be enabled in Settings → About → Privacy Policy. Turning it off stops future reports, not records already sent. <b>TestFlight build 20 and older versions without the control may report automatically when you tune</b>; update to a version with the control and leave it off, or do not use radio in the older version to avoid those reports. Some visualization preferences may sync through your iCloud; the reporting choice stays on this device. <a class="policy-link" href="/privacy/">Read the full Privacy Policy</a>.</div>
       </details>
       <details>
         <summary>Can I change how a visualization behaves?</summary>
@@ -690,10 +694,10 @@
 <footer>
   <div class="wrap foot">
     <div>© <span id="yr">2026</span> SoundMural. All rights reserved.</div>
-    <div class="cols">
-      <a href="mailto:privacy@soundmural.com">Privacy</a>
-      <a href="mailto:hello@soundmural.com">Support</a>
-    </div>
+    <nav class="cols" aria-label="Footer navigation">
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/support/">Support</a>
+    </nav>
   </div>
   <div class="wrap made">Made in Metal, on an Apple TV <span>◐</span></div>
 </footer>
