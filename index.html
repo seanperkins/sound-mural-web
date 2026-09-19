@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="SoundMural plays the albums you already own — Plex, Jellyfin, Navidrome or Spotify — and turns the actual waveform into 26 real-time visualizations on your Apple TV. Coming soon. Free to try, $9.99 to own, no subscription." />
+<meta name="description" content="Coming soon to Apple TV: SoundMural with five free visuals and unlimited listening from Plex, Jellyfin, Navidrome, Apple Music and Internet Radio. US $9.99 once unlocks the 26-visual Launch Collection and its updates; future collections sold separately." />
 <meta name="theme-color" content="#07070f" />
 <title>SoundMural — Your music, painted across the room</title>
 <style>
@@ -242,7 +242,7 @@
     <img class="logo" src="logo.png" alt="SoundMural app icon" />
     <div class="kicker">Coming soon · Apple TV 4K</div>
     <h1>Your music, <span class="g">painted across the room</span></h1>
-    <p class="sub">SoundMural plays the albums you already own — from Plex, Jellyfin, Navidrome or Spotify — and turns the waveform itself into twenty-six real-time visualizations on your Apple TV.</p>
+    <p class="sub">Your library, your favourite station, your Apple Music — painted across your Apple TV. SoundMural turns audio from Plex, Jellyfin, Navidrome and Internet Radio into real-time visuals, with a separate track-informed experience for Apple Music.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" /></svg>
@@ -250,7 +250,7 @@
       </a>
       <a class="btn btn-ghost" href="#visuals">See all 26 visualizations</a>
     </div>
-    <p class="note">Free to try at launch · <b>$9.99 one-time</b> to unlock every visualization — no subscription</p>
+    <p class="note">At launch: five free visuals, unlimited listening · <b>US $9.99 one-time</b> for the 26-visual Launch Collection · No SoundMural subscription</p>
 
     <div class="stage" id="stage">
       <video id="hero-video" muted loop playsinline preload="metadata" aria-hidden="true"
@@ -266,8 +266,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-tag">How it works</div>
-      <h2>It's watching the waveform, not a clock</h2>
-      <p>Most visualizers are an animation with a volume knob attached. SoundMural measures the audio sixty times a second — bass, mid, treble, transients, the beat, and how hard the track is building — and hands each of those to a different part of the picture.</p>
+      <h2>Real audio when the source allows it</h2>
+      <p>Plex, Jellyfin, Navidrome and Internet Radio provide audio samples SoundMural can analyse on your Apple TV — spectrum, transients, beat and phrase tension shape the picture. Apple Music does not expose PCM samples to the app: its visuals are track-informed, not waveform analysis.</p>
     </div>
     <div class="grid">
       <div class="card feature">
@@ -277,8 +277,8 @@
       </div>
       <div class="card">
         <div class="ic">♫</div>
-        <h3>Plays the library you already own</h3>
-        <p>Point it at a <b>Plex</b>, <b>Jellyfin</b>, or <b>Navidrome</b> server, browse by album art, and stream or download. Those three hand the visualizer real PCM samples — an eight-band spectrum, onsets, beat, and phrase tension. <b>Spotify</b> connects for now-playing, artwork, and transport.</p>
+        <h3>Your library, streaming and radio</h3>
+        <p>Connect <b>Plex</b>, <b>Jellyfin</b> or <b>Navidrome</b> for your own music, choose <b>Apple Music</b> with an eligible subscription, or start <b>Internet Radio</b> without an account. All five sources and unlimited listening are included in Free; the Launch Collection adds visuals, not playback access.</p>
       </div>
       <div class="card">
         <div class="ic">◐</div>
@@ -307,9 +307,9 @@
 <section id="visuals" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-tag">The catalog</div>
+      <div class="sec-tag">The Launch Collection</div>
       <h2>Twenty-six ways to watch a record</h2>
-      <p>Rendered in Metal at 1080p60, grouped into five packs, one swipe apart on the remote. Every clip below is captured from the app itself — the same shaders, reacting to a real track through the same analysis an Apple TV runs.</p>
+      <p>These are the 26 launch visuals, grouped into five browsing categories — not five separate purchases. Julia, Aurora, Starfield, Breaker and Plasma will be free. One Launch Collection purchase unlocks the full set below and its updates; future collections will be sold separately. Clips show the app's Metal shaders reacting to analysed audio, not Apple Music's track-informed mode.</p>
     </div>
 
     <div class="chips">
@@ -331,7 +331,7 @@
         <figcaption>
           <h4>Julia Fractal</h4>
           <p>Connected only while its constant stays inside the Mandelbrot set. Bass walks it to the edge; a real drop scatters the whole figure into dust, and it reforms intact.</p>
-          <div class="drv"><span>bass</span><span>drop</span></div>
+          <div class="drv"><span>Free at launch</span><span>bass</span><span>drop</span></div>
         </figcaption>
       </figure>
       <figure class="viz" data-viz="aurora">
@@ -340,7 +340,7 @@
         <figcaption>
           <h4>Aurora</h4>
           <p>Curtains of domain-warped noise, folded over each other. Mid frequencies set how fast the field flows; bass sets how far it warps out of shape.</p>
-          <div class="drv"><span>mid</span><span>bass</span></div>
+          <div class="drv"><span>Free at launch</span><span>mid</span><span>bass</span></div>
         </figcaption>
       </figure>
       <figure class="viz" data-viz="reaction">
@@ -419,7 +419,7 @@
         <figcaption>
           <h4>Starfield</h4>
           <p>Six depth layers streaming out of the vanishing point. A transient stretches every star into a streak, so the field appears to jump to light speed on the snare.</p>
-          <div class="drv"><span>bass</span><span>onset</span></div>
+          <div class="drv"><span>Free at launch</span><span>bass</span><span>onset</span></div>
         </figcaption>
       </figure>
       <figure class="viz" data-viz="tunnel">
@@ -496,7 +496,7 @@
         <figcaption>
           <h4>Breaker</h4>
           <p>Four balls against a brick wall, with no paddle and no pit — the floor is a wall, and an emptied wall refills. Bass sets ball speed; the bricks light on the beat.</p>
-          <div class="drv"><span>bass</span><span>beat</span></div>
+          <div class="drv"><span>Free at launch</span><span>bass</span><span>beat</span></div>
         </figcaption>
       </figure>
       <figure class="viz" data-viz="skyline">
@@ -548,7 +548,7 @@
         <figcaption>
           <h4>Plasma</h4>
           <p>A sum of sinusoids indexed straight into the palette — the canonical demo effect, and still the one that fills a wall best. Bass shifts the palette; mid speeds the field.</p>
-          <div class="drv"><span>bass</span><span>mid</span></div>
+          <div class="drv"><span>Free at launch</span><span>bass</span><span>mid</span></div>
         </figcaption>
       </figure>
       <figure class="viz" data-viz="copper">
@@ -592,8 +592,8 @@
     <p class="note-center">All twenty-six sit under the same camera rig, take their palette from the album art, and honour Reduce Motion.</p>
 
     <div class="specs">
-      <span>Plex</span><span>Jellyfin</span><span>Navidrome</span><span>Spotify</span>
-      <span>26 visualizations</span><span>1080p60 Metal</span><span>Offline playback</span>
+      <span>Plex</span><span>Jellyfin</span><span>Navidrome</span><span>Apple Music</span><span>Internet Radio</span>
+      <span>26 launch visualizations</span><span>1080p60 Metal</span><span>Downloaded server music offline</span>
       <span>TLS-first</span><span>Album-art palettes</span><span>Reduce Motion</span>
     </div>
   </div>
@@ -603,8 +603,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-tag">Pricing</div>
-      <h2>Free to try. Own it forever.</h2>
-      <p>The nearest thing to SoundMural on the App Store costs $39.99 for a lifetime unlock. This is one payment of $9.99, and there is no second one.</p>
+      <h2>Five free. A collection to keep.</h2>
+      <p>Listen as long as you like with five free visuals and every supported music source. At launch, one US $9.99 purchase will unlock the full 26-visual Launch Collection and updates to those visuals. Future collections will be sold separately.</p>
     </div>
 
     <div class="price-wrap">
@@ -613,23 +613,23 @@
         <div class="price">$0</div>
         <div class="pmt">forever · no trial to manage</div>
         <ul>
-          <li>A starter pack of visualizations</li>
-          <li>Full playback from Plex, Jellyfin, Navidrome &amp; Spotify</li>
-          <li>Offline downloads from every source</li>
+          <li>Julia, Aurora, Starfield, Breaker &amp; Plasma</li>
+          <li>Unlimited listening — no trial timer</li>
+          <li>Plex, Jellyfin, Navidrome, Apple Music &amp; Internet Radio</li>
           <li>Album-art palettes, camera controls, Reduce Motion</li>
         </ul>
         <a class="btn btn-ghost" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Get the launch email</a>
       </div>
       <div class="tier paid">
         <div class="badge">Recommended</div>
-        <h3>Full Unlock</h3>
-        <div class="price">$9.99<small> one-time</small></div>
-        <div class="pmt">every visualization, no subscription</div>
+        <h3>Launch Collection</h3>
+        <div class="price">$9.99<small> US · one-time</small></div>
+        <div class="pmt">26 launch visuals, no subscription</div>
         <ul>
-          <li>All 26 visualizations, all five packs</li>
-          <li>Everything in Free, unlocked</li>
-          <li>Works on every Apple TV on your account</li>
-          <li>Free updates, yours forever</li>
+          <li>The full set shown above: 26 visuals, including the free five</li>
+          <li>Updates to these 26 launch visuals included</li>
+          <li>Restore access with the same Apple Account</li>
+          <li>Future collections sold separately</li>
         </ul>
         <a class="btn btn-primary" href="mailto:hello@soundmural.com?subject=Tell%20me%20when%20SoundMural%20ships">Tell me when it ships</a>
       </div>
@@ -638,9 +638,9 @@
       <span>✓ No subscription</span>
       <span>✓ No ads</span>
       <span>No SoundMural account</span>
-      <span>✓ Own it forever</span>
+      <span>✓ One-time Launch Collection</span>
     </div>
-    <p class="price-note">Pricing at launch. SoundMural isn't on the App Store yet — leave an email and you'll get exactly one message when it is.</p>
+    <p class="price-note">Approved launch offer; purchases are not yet available. SoundMural isn't on the App Store yet. US price shown; the app will display Apple's local price before purchase. Music-service subscriptions and server access are separate. Leave an email for one launch message.</p>
   </div>
 </section>
 
@@ -653,7 +653,7 @@
     <div class="faq">
       <details open>
         <summary>When can I actually get it?</summary>
-        <div class="a">Not yet — SoundMural is finished enough to demo and not yet on the App Store. The visuals, the camera rig, and the Plex / Jellyfin / Navidrome / Spotify players are all built and running on real hardware; the free-versus-paid split is the remaining piece. Leave your address and you'll get <b>one</b> email on the day it ships, and nothing else.</div>
+        <div class="a">SoundMural is not yet on the App Store. The app supports <b>Plex, Jellyfin, Navidrome, Apple Music and Internet Radio</b>; Launch Collection purchases will become available with the App Store release. The launch offer is five free visuals with unlimited listening, plus an optional one-time collection purchase. Leave your address for <b>one</b> email when it ships.</div>
       </details>
       <details>
         <summary>Are the clips on this page really the app?</summary>
@@ -665,11 +665,11 @@
       </details>
       <details>
         <summary>Which music sources does it support, and does it matter which?</summary>
-        <div class="a">It matters a great deal. <b>Plex</b>, <b>Jellyfin</b> and <b>Navidrome</b> stream audio the app can actually analyse, giving the visualizer all twelve measured features — eight-band spectrum, onsets, beat, and the tension that builds across a phrase. <b>Spotify</b> works for browsing, now-playing, artwork and transport, but DRM means no app may touch its audio, so those visuals run on a musical driver derived from the track's own metadata rather than real samples.</div>
+        <div class="a"><b>Plex, Jellyfin, Navidrome and Internet Radio</b> provide audio the app can analyse on the device, including spectrum, onsets, beat and phrase tension. <b>Apple Music</b> provides playback through an eligible subscription, but does not expose PCM samples to SoundMural. Its visuals respond to track information rather than an analysed waveform. All five sources are included in Free; you still need access to your chosen server or music service. Internet Radio needs no SoundMural account or music subscription.</div>
       </details>
       <details>
         <summary>Do I need an internet connection?</summary>
-        <div class="a">No. Anything you <b>download</b> to the TV plays fully offline. Streaming works anywhere your own server is reachable — usually your home network. SoundMural has no cloud service of its own to be offline from.</div>
+        <div class="a">It depends on the source. Music downloaded from <b>Plex, Jellyfin or Navidrome</b> can play offline on the TV. Streaming from those servers needs a connection to the server, which may be on your home network. <b>Internet Radio</b> needs internet access, and <b>Apple Music</b> needs its service connection and an eligible subscription. SoundMural does not promise offline downloads from every source.</div>
       </details>
       <details>
         <summary>Does it collect or share any of my data?</summary>
@@ -684,8 +684,12 @@
         <div class="a">The system <b>Reduce Motion</b> setting is honoured throughout, and it does something specific: it damps the non-audio motion — camera drift, pan, roll, and pace — while leaving the music's own influence on the picture intact. You still see the track; you just aren't flown around it. Metaballs, Aurora and Plasma are the gentlest of the twenty-six even without it. Every clip on this page also stays paused on a still frame if your browser reports Reduce Motion.</div>
       </details>
       <details>
+        <summary>What is included for free?</summary>
+        <div class="a">At launch, <b>Julia, Aurora, Starfield, Breaker and Plasma</b> are free, with <b>unlimited listening</b> and all supported sources: Plex, Jellyfin, Navidrome, Apple Music and Internet Radio. There is no trial timer or listening limit. Provider subscriptions or server access remain separate; radio needs neither a SoundMural account nor a music subscription.</div>
+      </details>
+      <details>
         <summary>Is there really no subscription?</summary>
-        <div class="a">Correct. Free to try, and a single <b>$9.99 one-time</b> purchase unlocks every visualization in all five packs, including future ones, on every Apple TV on your account. No recurring charge, ever — the app has no server to pay for.</div>
+        <div class="a">There is <b>no SoundMural subscription</b>. The optional <b>US $9.99 one-time Launch Collection</b> purchase unlocks the exact 26 visuals shown on this page, including the five free visuals, plus updates to those 26. It does <b>not</b> include future collections, which will be sold separately. Purchase and restore will use your Apple Account; the app will show Apple's localized price. An Apple Music subscription, if you use that source, is separate.</div>
       </details>
     </div>
   </div>

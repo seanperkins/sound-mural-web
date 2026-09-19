@@ -8,9 +8,34 @@ Static pages live in this repo, served from **Netlify** at `soundmural.com`:
 | --- | --- | --- |
 | `/` | Marketing homepage (one-pager) | `index.html`, `logo.png` |
 | `/privacy/` | Privacy policy, including radio reporting consent and older beta behavior | `privacy/index.html`, `information.css` |
-| `/support/` | Contact, provider setup and troubleshooting | `support/index.html`, `information.css` |
-| `/oauth/` | Spotify authorization-code hop back to the tvOS app | `oauth/index.html` |
+| `/support/` | Contact, provider setup, purchase restoration and troubleshooting | `support/index.html`, `information.css` |
+| `/oauth/` | Legacy Spotify authorization-code forwarder; not a supported launch source | `oauth/index.html` |
 | `/oauth/settings.html` | Decodes the app's debug-share QR payload | `oauth/settings.html` |
+
+## Launch offer and supported sources
+
+SoundMural is not yet on the App Store. Launch Collection purchasing is
+implemented and locally verified in the app, but live product configuration and
+sandbox/device acceptance remain pending. The website describes the approved
+launch offer, not an available purchase:
+
+- **Free:** Julia, Aurora, Starfield, Breaker and Plasma, unlimited listening,
+  and every supported source.
+- **Launch Collection:** US $9.99 once for the exact 26 launch visuals shown on
+  the homepage, including the free five, and updates to those visuals.
+  Future collections will be sold separately. No SoundMural subscription.
+- **Sources:** Plex, Jellyfin, Navidrome, Apple Music and Internet Radio.
+  Provider subscriptions and server access are separate; radio needs no
+  SoundMural account or music subscription.
+- **Visual response:** server music and radio provide PCM audio for on-device
+  analysis. Apple Music visuals are track-informed, not waveform analysis;
+  Apple Music does not expose PCM audio samples to the app.
+
+The app will show Apple's localized purchase price and restore ownership through
+StoreKit using the purchasing Apple Account. Do not imply a purchase unlocks
+future collections, that every source supports offline downloads, or that
+Spotify is available at launch. The legacy OAuth route below remains in place
+for existing infrastructure; it is not a product availability promise.
 
 ## Deploy (Netlify)
 
@@ -22,7 +47,7 @@ root.
 2. Add the custom domain `soundmural.com` and point DNS at Netlify.
 3. Push to `main`; Netlify rebuilds and publishes.
 
-## The Spotify forwarder (`oauth/index.html`)
+## The legacy Spotify forwarder (`oauth/index.html`)
 
 Spotify requires an **HTTPS** redirect URI (plain HTTP was removed 27 Nov 2025,
 loopback excepted), but a tvOS app receives its callback on a custom scheme.

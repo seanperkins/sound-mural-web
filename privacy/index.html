@@ -36,6 +36,7 @@
           <li><a href="#radio-reporting">Radio reporting</a></li>
           <li><a href="#connections">Service connections</a></li>
           <li><a href="#storage">Device &amp; iCloud storage</a></li>
+          <li><a href="#purchases">Planned App Store purchases</a></li>
           <li><a href="#choices">Your choices</a></li>
           <li><a href="#contact">Website &amp; contact</a></li>
         </ul>
@@ -68,9 +69,17 @@
       <section id="storage" aria-labelledby="storage-heading">
         <h2 id="storage-heading">What stays on your device</h2>
         <div class="section-body">
-          <p>SoundMural stores preferences, radio favorites, recent-play and resume information, and cached media or artwork on your Apple TV to provide its features. Radio favorites include saved station details. Audio analysis used to drive the visualizations runs on the device; SoundMural does not upload that analysis to a developer-operated service.</p>
+          <p>SoundMural stores preferences, radio favorites, recent-play and resume information, and cached media or artwork on your Apple TV to provide its features. Radio favorites include saved station details. Audio analysis for Plex, Jellyfin, Navidrome and Internet Radio runs on the device; SoundMural does not upload that analysis to a developer-operated service. Apple Music does not expose PCM audio samples to SoundMural, so its visuals use track information rather than waveform analysis.</p>
           <p>Saved provider session credentials are stored in the system Keychain. Apple Music uses Apple's system authorization rather than a SoundMural account. Connecting a source still sends the information needed to authenticate to the relevant service.</p>
           <p>Some app-level visualization preferences, favorited visualizations and saved visualization defaults may sync through your Apple Account's iCloud key-value storage. <strong>The Share Station Selections choice stays local.</strong> Radio favorites, recent-play records and resume information are not part of that visualization-settings sync.</p>
+        </div>
+      </section>
+      <section id="purchases" aria-labelledby="purchases-heading">
+        <h2 id="purchases-heading">Planned App Store purchases</h2>
+        <div class="section-body">
+          <p>SoundMural is not yet on the App Store, and purchases are not yet available. The launch offer includes five free visuals — Julia, Aurora, Starfield, Breaker and Plasma — and unlimited listening from all supported sources. The optional US $9.99 one-time Launch Collection unlocks the exact 26 launch visuals and their updates; future collections will be sold separately. <a href="/#pricing">See the launch offer and provider requirements.</a></p>
+          <p>In versions with purchases, Apple will process payment and restoration through the App Store and your Apple Account. SoundMural will use Apple's StoreKit transaction verification to determine access to purchased visuals, including verified entitlement information available on the device when offline. No SoundMural account or developer-operated purchase backend is planned, and SoundMural will not receive your payment-card details.</p>
+          <p>Purchase and restore requests communicate with Apple. Apple's own terms and <a href="https://www.apple.com/legal/privacy/">Privacy Policy</a> apply to its payment and account services. Deleting SoundMural does not delete your App Store purchase history.</p>
         </div>
       </section>
       <section id="choices" aria-labelledby="choices-heading">

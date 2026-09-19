@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Get help with SoundMural on Apple TV: start account-free radio, connect a music server, manage privacy settings and contact support." />
+  <meta name="description" content="Get help with SoundMural on Apple TV: account-free radio, supported music sources, the planned Launch Collection purchase, privacy settings and support." />
   <meta name="theme-color" content="#07070f" />
   <link rel="canonical" href="https://soundmural.com/support/" />
   <link rel="icon" href="/logo.png" type="image/png" />
@@ -30,11 +30,13 @@
         <p class="lead">Start with radio, connect your music library, or get help with something that isn't working.</p>
         <a class="contact-link" href="mailto:hello@soundmural.com">hello@soundmural.com</a>
         <p class="section-body">No SoundMural account is needed to ask for help. Never send passwords or access tokens.</p>
+        <p class="section-body">SoundMural is not yet on the App Store, and Launch Collection purchases are not yet available. These setup instructions also support beta users; available controls can differ by build.</p>
       </div>
       <nav class="contents" aria-label="On this page">
         <ul>
           <li><a href="#radio">Start with radio</a></li>
           <li><a href="#providers">Connect your music</a></li>
+          <li><a href="#launch-collection">Free visuals &amp; Launch Collection</a></li>
           <li><a href="#playback">Playback help</a></li>
           <li><a href="#privacy">Privacy controls</a></li>
           <li><a href="#contact">Contact support</a></li>
@@ -66,8 +68,18 @@
           <p>Enter the Navidrome server address, username and password, then select <strong>Sign In</strong>. Include a port or path if your server requires one. Use the account for that server, not your Apple Account.</p>
           <h3>Apple Music</h3>
           <p>Choose <strong>Apple Music</strong> and select <strong>Allow Access</strong> when offered. It uses this Apple TV's Apple Account and requires access to Apple Music catalog playback through an eligible subscription. If access was denied, manage the app's music access in tvOS Settings and return to SoundMural. Follow any subscription or authorization message shown in the app.</p>
+          <p>Apple Music visuals are <strong>track-informed</strong>. Apple Music does not expose PCM audio samples to SoundMural, so this is not waveform or spectrum analysis. Plex, Jellyfin, Navidrome and Internet Radio supply audio the app can analyse on the Apple TV.</p>
           <h3>If a server will not connect</h3>
           <p>Check the address, port and credentials, and confirm the server is running. For a home server, make sure the Apple TV can reach it on your network. Prefer an HTTPS address. HTTP connections are not encrypted; for Jellyfin, Quick Connect avoids sending your password through the password form, but it does not make an HTTP connection encrypted.</p>
+        </div>
+      </section>
+      <section id="launch-collection" aria-labelledby="collection-heading">
+        <h2 id="collection-heading">Free visuals and the Launch Collection</h2>
+        <div class="section-body">
+          <p><strong>At launch, Julia, Aurora, Starfield, Breaker and Plasma will be free</strong>, with unlimited listening from Plex, Jellyfin, Navidrome, Apple Music and Internet Radio. There is no trial timer. Provider subscriptions and server access are separate; Internet Radio needs no SoundMural account or music subscription.</p>
+          <p>The optional <strong>US $9.99 one-time Launch Collection</strong> purchase will unlock the exact <a href="/#visuals">26 launch visuals shown on the homepage</a>, including the free five, and updates to those visuals. <strong>Future collections will be sold separately.</strong> There is no SoundMural subscription. The app will display Apple's localized price before purchase.</p>
+          <p><strong>Purchases will become available with the App Store release.</strong> SoundMural uses your Apple Account for purchases and restoration, with automatic access restoration and an explicit <strong>Restore Purchases</strong> action in Settings. An older beta may not have these controls. If access is missing in a build that includes purchases, check that you are using the purchasing Apple Account and use Restore Purchases.</p>
+          <p>A store connection or product-loading error should not require another purchase. A pending purchase needs Apple's approval before the collection becomes available; a cancelled purchase leaves the five free visuals and playback available. Contact support with the exact message and build number if you need help.</p>
         </div>
       </section>
       <section id="playback" aria-labelledby="playback-heading">
